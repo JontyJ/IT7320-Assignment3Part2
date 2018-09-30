@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,27 +12,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class LoginServlet
+ * Servlet implementation class RegisterServlet
  */
-@WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/RegisterServlet")
+public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginServlet() {
+    public RegisterServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username; 
 		String password;
-		boolean exists = false;
 		
 		try {
 			username = request.getParameter("username");
@@ -41,22 +39,20 @@ public class LoginServlet extends HttpServlet {
 			
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/gamegear","root", "");
-			PreparedStatement ps =con.prepareStatement("select * from register where username=? and password=?");
-			ps.setString(1, username);
-			ps.setString(2, password);
-			ResultSet rs = ps.executeQuery();
-			exists = rs.next();
+			PreparedStatement stmt =con.prepareStatement("insert into register(username, password) values(?,?)");
+			stmt.setString(1, username);
+			stmt.setString(2, password);
+			stmt.executeUpdate();
+			stmt.close();
+			con.close();
 			
-			if(exists == true) {
-				response.sendRedirect("index.jsp");
-			}
-			else {
-				response.sendRedirect("loginFailed.jsp");
-			}
+		response.sendRedirect("index.jsp");
+			
 		}
 		catch(Exception e) {
 			response.sendRedirect("loginFailed.jsp");
 			System.out.println(e);
 	}
 	}
+
 }

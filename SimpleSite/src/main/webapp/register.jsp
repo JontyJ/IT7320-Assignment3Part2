@@ -5,12 +5,12 @@
 <html>
 <body>
 <h2>Welcome to GameGear!</h2>
-<h3>Login below</h3>
-<form action="LoginServlet" method="post">
+<h3>Register below</h3>
+<form action="RegisterServlet" method="post">
 Username: <input type="text" name="username"></br>
 Password: <input type="password" name="password"></br>
-<input type="submit" value="login">
+<input type="submit" value="register">
 </form>
-<li><a href="register.jsp" >Don't have an account? Register here</a></li>
+<li><a href="login.jsp" >Don't want to register? Go back to the login screen here</a></li>
 </body>
 </html>
